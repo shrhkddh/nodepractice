@@ -9,16 +9,13 @@
 
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize(
-    "wecode_group",
-    "root",
-    process.env.MYSQL_PASSWORD,
-    {
-        host    : 'localhost',
-        port    : 3306,
-        logging : true,
-        dialect : 'mysql',
-    }
-);
-
+const sequelize = new Sequelize({
+    dialect  : 'mysql',
+    logging  : false,
+    host     : process.env.HOST,
+    database : process.env.DATABASE,
+    username : process.env.USER,
+    password : process.env.MYSQL_PASSWORD,
+    port     : process.env.MYSQL_PORT
+});
 module.exports = sequelize;

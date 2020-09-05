@@ -1,9 +1,9 @@
-const { Group }         = require('../DAO');
+const { Groups }          = require('../DAO');
 const { errorGenerator } = require('../utils/');
 
 const getMembers = async function ( req, res, next ) {
     try {
-        const [members] = await Group.findAll(req.query);
+        const [members] = await Groups.findAll(req.query);
 
         res.status(200).json({ members });
     } catch (err) {
@@ -13,7 +13,7 @@ const getMembers = async function ( req, res, next ) {
 
 const getOneMember = async function ( req, res, next ) {
     try {
-        const [member] = await Group.findById(req.params.id);
+        const [member] = await Groups.findById(req.params.id);
 
         if(!member.length) errorGenerator('Not found', 404);
 
@@ -25,7 +25,7 @@ const getOneMember = async function ( req, res, next ) {
 
 const getGroupMember = async function ( req, res, next) {
     try {
-        const [group] = await Group.findAll({
+        const [group] = await Groups.findAll({
             attributes : ['group']
         });
         if(!group.length) errorGenerator('No group', 401);
