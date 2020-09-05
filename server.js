@@ -23,6 +23,7 @@ const http          = require('http');
 const server        = http.createServer(app);
 const { sequelize } = require('./models');
 
+
 (async function () {
     try {
         await sequelize.authenticate();
@@ -37,4 +38,4 @@ const { sequelize } = require('./models');
         console.log("DB CONNECTION ERROR");
         console.log(err);
     }
-})
+})();

@@ -1,7 +1,7 @@
-const groupsRouter = require('./groupsRouter');
+const batchesRouter = require('./batchesRouter');
 
 const router = (app) => {
-    app.use('/groupsRouter', groupsRouter);
+    app.use('/batchesRouter', batchesRouter);
 };
 
 module.exports = router;

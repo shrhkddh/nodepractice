@@ -1,3 +1,3 @@
-const Groups = require('./groups');
+const Batches = require('./batches');
 
-module.exports = { Groups };
+module.exports = { Batches };
