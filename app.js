@@ -1,9 +1,9 @@
-const express = require('express');
-const hpp = require('hpp');
-const helmet = require('helmet');
-const cors = require('cors');
+const express    = require('express');
+const hpp        = require('hpp');
+const helmet     = require('helmet');
+const cors       = require('cors');
 const bodyParser = require('body-parser');
-const logger = require('morgan');
+const logger     = require('morgan');
 
 const router = require('./routes');
 

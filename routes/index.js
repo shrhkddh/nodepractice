@@ -1,7 +1,7 @@
-const group9Router = require('./group9Router');
+const groupsRouter = require('./groupsRouter');
 
 const router = (app) => {
-    app.use('/group9Router', group9Router);
+    app.use('/groupsRouter', groupsRouter);
 };
 
 module.exports = router;

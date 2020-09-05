@@ -22,31 +22,26 @@ const { DataTypes } = require('sequelize');
 
 module.exports = function (sequelize) {
     return sequelize.define(
-        "wecodeGroup",
+        "Groups",
         {
-            group : {
-                type      : DataTypes.STRING,
-                allowNull : false,
+            id : {
+                type          : DataTypes.INTEGER,
+                primaryKey    : true,
+                autoIncrement : true,
             },
-
             name : {
-                type      : DataTypes.STRING,
-                allowNull : false,
-            },
-
-            email : {
                 type      : DataTypes.STRING,
                 allowNull : false,
             },
         },
         {
             freezeTableName : true,
-            paranoid : true,
-            underscored : true,
-            timestamps : true,
-            createdAt : "created_at",
-            updatedAt : "updated_at",
-            deletedAt : "deleted_at",
+            paranoid        : false,
+            underscored     : true,
+            timestamps      : false,
+            // createdAt : "created_at",
+            // updatedAt : "updated_at",
+            // deletedAt : "deleted_at",
         }
     );
 };
