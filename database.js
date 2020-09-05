@@ -14,8 +14,9 @@ const sequelize = new Sequelize({
     logging  : false,
     host     : process.env.HOST,
     database : process.env.DATABASE,
-    username : process.env.USER,
+    username : 'root',
     password : process.env.MYSQL_PASSWORD,
     port     : process.env.MYSQL_PORT
 });
+
 module.exports = sequelize;

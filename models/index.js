@@ -9,14 +9,14 @@ const sequelizeModels = function ({ sequelize, models }) {
     }, {});
 };
 
-const models = ['Group', 'Member'];
+const models = ['Batches', 'Members'];
 const model = sequelizeModels({ sequelize, models });
 
 console.log(model);
 
 // model.Member.hasOne(model.Group);
 // model.Group.belongsTo(model.Member);
-model.Group.hasMany(model.Member);
-model.Member.belongsTo(model.Group);
+model.Batches.hasMany(model.Members);
+model.Members.belongsTo(model.Batches);
 
 module.exports = { sequelize, model };
