@@ -12,7 +12,7 @@ const sequelizeModels = function ({ sequelize, models }) {
 const models = ['Batches', 'Members'];
 const model = sequelizeModels({ sequelize, models });
 
-console.log(model);
+// console.log(model);
 
 // model.Member.hasOne(model.Group);
 // model.Group.belongsTo(model.Member);
