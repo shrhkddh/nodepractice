@@ -9,14 +9,16 @@ const sequelizeModels = function ({ sequelize, models }) {
     }, {});
 };
 
-const models = ['Batches', 'Members'];
+const models = ['Batches', 'Members', 'Weeks', 'Pairs'];
 const model = sequelizeModels({ sequelize, models });
 
-// console.log(model);
-
-// model.Member.hasOne(model.Group);
-// model.Group.belongsTo(model.Member);
 model.Batches.hasMany(model.Members);
 model.Members.belongsTo(model.Batches);
+
+model.Batches.belongsToMany(model.Pairs, { through: 'BatchesPair' });
+model.Pairs.belongsToMany(model.Batches, { through: 'BatchesPair' });
+
+model.Weeks.hasMany(model.Pairs);
+model.Pairs.belongsTo(model.Weeks);
 
 module.exports = { sequelize, model };
