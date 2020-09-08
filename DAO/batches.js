@@ -1,12 +1,9 @@
 const db = require('../database');
 
 class Batches {
-//     constructor({})
     static findAll(queryString) {
-        // const { filter } = queryString;
-        // return db.query(`SELECT ${filter ? filter : "*"} FROM batches`);
-        return db.query(`SELECT * FROM batches`);
-        
+        const { filter } = queryString;
+        return db.query(`SELECT ${filter ? filter : "*"} FROM batches`);
     }
 
     static findById(id) {

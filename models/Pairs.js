@@ -1,28 +1,8 @@
-// const mongoose = require('mongoose');
-// const Schema   = mongoose.Schema;
-
-// const group9Schema = new Schema({
-//     groupID : {
-//         type    : String,
-//         defualt : '9기',
-//     },
-//     name : {
-//         type     : String,
-//         required : true,
-//     },
-//     email : {
-//         type     : String,
-//         required : true,
-//     }
-// });
-
-// module.exports = mongoose.model('Group9', group9Schema);
-
 const { DataTypes } = require('sequelize');
 
 module.exports = function (sequelize) {
     return sequelize.define(
-        "Batches",
+        'Pairs',
         {
             id : {
                 type          : DataTypes.INTEGER,

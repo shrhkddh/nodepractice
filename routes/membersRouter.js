@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.get("/", membersController.getAllMembers);
 router.get("/getBatchmembers", membersController.getBatchMembers);
-router.post("/postMember", membersController.postMember);
-router.patch("/patchMember", membersController.patchMember);
-router.delete("/deleteMember", membersController.deleteMember);
+router.post("/", membersController.postMember);
+router.patch("/:id", membersController.patchMember);
+router.delete("/:id", membersController.deleteMember);
 
 module.exports = router;

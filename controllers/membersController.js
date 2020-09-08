@@ -3,10 +3,8 @@ const { errorGenerator } = require('../utils');
 
 const getAllMembers = async function ( req, res, next ) {
     try {
-        // console.log(req.query)
         const [members] = await Members.findAll(req.query);
         
-
         res.status(200).json({ members });
     } catch (err) {
         next(err);
@@ -15,7 +13,6 @@ const getAllMembers = async function ( req, res, next ) {
 
 const getBatchMembers = async function ( req, res, next ) {
     try {
-        // console.log(req.query)
         const [batchmembers] = await Members.findById(req.query.id);
 
         if(!batchmembers.length) errorGenerator('Not found', 404);
@@ -29,14 +26,8 @@ const getBatchMembers = async function ( req, res, next ) {
 const postMember = async function (req, res, next) {
     try {
         const member    = req.body;
-        console.log('members is :', member)
-
         const newMember = new Members(member);
-        console.log("newmember type is : ", typeof(newMember));
-        console.log("show newmember: ", newMember.id);
-
         await newMember.create();
-        console.log("순서좀 알아보자");
 
         res.status(200).json({
             message : "Member created",
@@ -50,7 +41,7 @@ const patchMember = async function (req, res, next) {
     try {
         const member    = req.body;
         const newMember = new Members(member);
-        await newMember.update();
+        await newMember.update(req.params.id);
 
         res.status(200).json({
             message : "Complete Update Member",
@@ -62,8 +53,7 @@ const patchMember = async function (req, res, next) {
 
 const deleteMember = async function (req, res, next) {
     try {
-        const member = await Members.delete(req.query.name);
-        console.log(req.query.name)
+        const member = await Members.delete(req.params.id);
 
         res.status(200).json({
             message : "Delete Member"

@@ -4,8 +4,6 @@ const { errorGenerator } = require('../utils');
 const getBatches = async function ( req, res, next ) {
     try {
         const [batches] = await Batches.findAll(req.query);
-        // const [batches] = await Batches.findAll();
-        console.log(req.query);
 
         res.status(200).json({ batches });
     } catch (err) {

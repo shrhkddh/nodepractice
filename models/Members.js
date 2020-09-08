@@ -25,9 +25,6 @@ module.exports = function (sequelize) {
             paranoid        : false,
             underscored     : true,
             timestamps      : false,
-            // createdAt: "created_at",
-            // updatedAt: "updated_at",
-            // deletedAt: "deleted_at",
         }
     );
 };
