@@ -1,32 +1,28 @@
 const { Pairs } = require('../DAO');
-const { errorGenerator, shuffle } = require('../utils');
+const { 
+    errorGenerator,
+    groupStudents,
+    shuffle,
+    firstRun 
+} = require('../utils');
 
 const getPairs = async function (req, res, next ) {
     try {
         const [batchmembers] = await Pairs.findByBatchId(req.params.id);
-        const [weekID] = await Pairs.findByWeekId();
-        console.log("R U WeekID?? : ",weekID);
+        const [weekID]       = await Pairs.findByWeekId();
+        const week           = Object.keys(weekID).length;
         
-        const groupStudents = list => {
-            let obj = {};
-            let shuffledList = shuffle(list);
-            let i = 0;
+        let pairs = [];
+        for (let j = 0; j < week; j++){
+            let shuffledList = shuffle(batchmembers);
+            let shuffling    = groupStudents(shuffledList, j);
+            let firstShuffle = firstRun(shuffling);
 
-            while (shuffledList.length > 0) {
-                if (shuffledList[1] === undefined) {
-                    obj[i - 1].push(shuffledList[0]);
-                    break;
-                }
+            // console.log("First Result : ", firstShuffle);
 
-                obj[i] = [shuffledList[0], shuffledList[1]];
-                shuffledList.splice(0, 2);
-                i++;
-            }
-            return obj;
+            pairs.push('Week' + (j+1), firstShuffle );
         };
 
-        const pairs = groupStudents(batchmembers);
-        // const pairsDB = pairs.save();
         
         // res.status(200).json({ massage : "shuffle Test" });
         res.status(200).json({ pairs });

@@ -1,9 +1,13 @@
 const { Batches }        = require('../DAO');
+
+// const Batch = require('../models/Batches');
 const { errorGenerator } = require('../utils');
 
 const getBatches = async function ( req, res, next ) {
     try {
-        const [batches] = await Batches.findAll(req.query);
+        const batches = await Batches.findbatch(req.query);
+        // const batches = await Batch.find();
+        // console.log("batches is : ",batches);
 
         res.status(200).json({ batches });
     } catch (err) {
@@ -11,16 +15,14 @@ const getBatches = async function ( req, res, next ) {
     }
 };
 
-const getOneBatch = async function ( req, res, next ) {
+const postBatches = async function ( req, res, next ) {
     try {
-        const [batch] = await Batches.findById(req.params.id);
+        const batches = await Batches.makebatch(req.body);
 
-        if(!batch.length) errorGenerator('Not found', 404);
-
-        res.status(200).json({ batch });
+        res.status(200).json({ result : batches });
     } catch (err) {
         next(err);
     }
 };
 
-module.exports = { getBatches, getOneBatch };
+module.exports = { getBatches, postBatches };

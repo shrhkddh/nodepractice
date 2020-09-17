@@ -13,11 +13,16 @@ class Pairs {
         return db.query(`SELECT id FROM weeks`);
     }
 
-    // save(){
-    //     return db.query(
-    //         `INSERT INTO pairs VALUES`
-    //     )
-    // }
+    static save(week_id, batch_id,  member1, member2, member3){
+        db.query(
+            `INSERT INTO pairs (week_id, batch_id, member1, member2, member3) VALUES ('${week_id}', '${batch_id}', '${member1}', '${member2}', '${member3}')`
+        );
+
+        // 이 로직은 아직 작동 안함
+        db.query(
+            `SELECT IF ('${member3}' = 'undefined', 'NULL', member3) FROM pairs`
+        );
+    }
 }
 
 module.exports = Pairs;

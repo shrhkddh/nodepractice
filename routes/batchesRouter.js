@@ -4,6 +4,6 @@ const batchesController = require('../controllers/batchesController');
 const router = express.Router();
 
 router.get('/', batchesController.getBatches);
-router.get('/:id', batchesController.getOneBatch);
+router.post('/', batchesController.postBatches);
 
 module.exports = router;

@@ -3,9 +3,9 @@ const membersController = require('../controllers/membersController');
 
 const router = express.Router();
 
-router.get("/", membersController.getAllMembers);
-router.get("/getBatchmembers", membersController.getBatchMembers);
-router.post("/", membersController.postMember);
+router.get("/", membersController.getMembers);
+router.post("/signUp", membersController.signUp);
+router.post("/signIn", membersController.signIn);
 router.patch("/:id", membersController.patchMember);
 router.delete("/:id", membersController.deleteMember);
 
