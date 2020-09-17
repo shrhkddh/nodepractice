@@ -1,9 +1,11 @@
 const { Members }        = require('../DAO');
+
+// const Member = require('../models/Members');
 const { errorGenerator } = require('../utils');
 
-const getAllMembers = async function ( req, res, next ) {
+const getMembers = async function ( req, res, next ) {
     try {
-        const [members] = await Members.findAll(req.query);
+        const members = await Members.findmember(req.query);
         
         res.status(200).json({ members });
     } catch (err) {
@@ -11,30 +13,18 @@ const getAllMembers = async function ( req, res, next ) {
     }
 };
 
-const getBatchMembers = async function ( req, res, next ) {
+const signUp = async function (req, res, next) {
     try {
-        const [batchmembers] = await Members.findById(req.query.id);
+        const member = Members.makemember(req.body);
 
-        if(!batchmembers.length) errorGenerator('Not found', 404);
-
-        res.status(200).json({ batchmembers });
+        res.status(200).json({ member });
     } catch (err) {
         next(err);
     }
 };
 
-const postMember = async function (req, res, next) {
-    try {
-        const member    = req.body;
-        const newMember = new Members(member);
-        await newMember.create();
+const signIn = async function (req, res, next) {
 
-        res.status(200).json({
-            message : "Member created",
-        });
-    } catch (err) {
-        next(err);
-    }
 };
 
 const patchMember = async function (req, res, next) {
@@ -63,4 +53,4 @@ const deleteMember = async function (req, res, next) {
     }
 };
 
-module.exports = { getAllMembers, getBatchMembers, postMember, patchMember, deleteMember};
+module.exports = { getMembers, signUp, signIn, patchMember, deleteMember};

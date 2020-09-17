@@ -1,14 +1,36 @@
-const db = require('../database');
+// const db = require('../database');
 
-class Batches {
-    static findAll(queryString) {
-        const { filter } = queryString;
-        return db.query(`SELECT ${filter ? filter : "*"} FROM batches`);
+// class Batches {
+//     static findAll(queryString) {
+//         const  filter  = queryString;
+
+//         if (Object.keys(filter).length === 0 ) {
+//             return db.query(`SELECT * FROM batches `);
+//         }
+//         return db.query(`SELECT * FROM batches WHERE ${Object.keys(filter)} = "${Object.values(filter)}"`);
+        
+//     }
+// } 
+
+// module.exports = Batches;
+
+// const mongoose = require('mongoose');
+const Batch = require('../models/Batches');
+// const Batch = require('../models');
+
+// class Batches {
+const findbatch = (queryString) => {
+    const filter = queryString;
+
+    if (Object.keys(filter).length === 0) {
+        return Batch.find({})
     }
+    return Batch.find( {name : `${filter.name}`} )
+};
 
-    static findById(id) {
-        return db.query(`SELECT * FROM batches WHERE batches.id = ${id}`);
-    }
-} 
+const makebatch = (body) => {
+    return Batch.create( {'name' : `${body.name}`} );
+}
 
-module.exports = Batches;
+module.exports = { findbatch, makebatch };
+// module.exports = Batches;
