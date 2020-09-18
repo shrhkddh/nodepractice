@@ -6,7 +6,7 @@ const {
     firstRun 
 } = require('../utils');
 
-const getPairs = async function (req, res, next ) {
+const getPairs = async function (req, res, next) {
     try {
         const [batchmembers] = await Pairs.findByBatchId(req.params.id);
         const [weekID]       = await Pairs.findByWeekId();

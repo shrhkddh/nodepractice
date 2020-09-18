@@ -32,11 +32,13 @@
 const mongoose = require('mongoose');
 
 const memberSchema = new mongoose.Schema({
-    id : mongoose.Schema.Types.ObjectId,
-    name : {type : String, required : true},
-    email : {type : String, required : true, unique : true},
-    password : {type : String, required : true},
-    staff : {type : Boolean, default : false},
+    id           : mongoose.Schema.Types.ObjectId,
+    name         : {type : String, required : true},
+    email        : {type : String, required : true, unique : true},
+    password     : {type : String, required : true},
+    refreshToken : {type : String},
+    staff        : {type : Boolean, default : false},
+    batche       : [{type : mongoose.Schema.Types.ObjectId, ref : 'Batch'}],
 }, {
     versionKey : false
 });

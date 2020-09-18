@@ -37,25 +37,48 @@
 
 // module.exports = Members;
 
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const Member = require('../models/Members');
 
-const findmember = (querystring) => {
+const findMember = (querystring) => {
     const filter = querystring;
     return Member.find(filter)
+    //find 메소드는 array형태를 리턴한다.
 };
 
-const makemember = async (body) => {
-    try{
-        if (body.staff === true){
-            await Member.create( {'name' : `${body.name}`, 'email' : `${body.email}`, 'password' : `${body.password}`} );
-            await Member.findOneAndUpdate( {'staff' : true} );
-            // console.log("IN HERE");
-        }
-        return Member.create( {'name' : `${body.name}`, 'email' : `${body.email}`, 'password' : `${body.password}`} );
-    // console.log("NOPE");
-    } catch (err) {
-        console.log(err);
-    }
+const memberEncodePassword = async ({
+    name,
+    email,
+    password,
+}) => {
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const memberData = new Member({
+        name,
+        email,
+        password : hashedPassword,
+    });
+    console.log("hashPassword is : ", hashedPassword);
+    return memberData;
 };
 
-module.exports = { findmember, makemember };
+const createToken = (memberId) => {
+    const token = jwt.sign({ _id : memberId.toString() }, process.env.SECRET_KEY, { expiresIn : process.env.EXPIRESIN });
+    // const token2 = jwt.sign({ _id : memberId.toString() }, process.env.SECRET_KEY, { expiresIn : '5m' });
+
+    // console.log("Token1 is : ", token);
+    // console.log("This is Token2 : ", token2);
+    return token;
+};
+
+const createMemberData = async (memberInput) => {
+    const memberData = await memberEncodePassword(memberInput);
+    return memberData.save();
+};
+
+module.exports = { 
+    findMember,
+    memberEncodePassword,
+    createToken,
+    createMemberData,
+};
