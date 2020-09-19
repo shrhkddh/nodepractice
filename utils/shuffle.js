@@ -1,7 +1,8 @@
-const shuffle = arr => {
+"use strict";
+const shuffle = (arr) => {
+    console.log(typeof (arr));
     let copy = arr.slice();
-
-    for (let i = arr.length - 1; i > 0; i-- ){
+    for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * i);
         const temp = copy[i];
         copy[i] = copy[j];
@@ -9,5 +10,4 @@ const shuffle = arr => {
     }
     return copy;
 };
-
 module.exports = shuffle;

@@ -27,7 +27,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const batchesSchema = new Schema({
-    id : mongoose.Schema.Types.ObjectId,
+    id   : mongoose.Schema.Types.ObjectId,
     name : {type : String, required : true},
 },{
     versionKey : false
