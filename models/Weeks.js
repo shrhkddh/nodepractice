@@ -23,13 +23,15 @@
 //     );
 // };
 
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+// const Schema = mongoose.Schema;
 
-const weeksSchema = new mongoose.Schema({
-    id : mongoose.Schema.Types.ObjectId,
-    name : {type : String, required : true},
-},{
-    versionKey : false
-});
+// const weeksSchema = new Schema({
+//     id : Schema.Types.ObjectId,
+//     name : {type : String, required : true},
+//     // pair : {type : Schema.Types.ObjectId, ref : 'Pairs'},
+// },{
+//     versionKey : false
+// });
 
-module.exports = mongoose.model('Weeks', weeksSchema);
+// module.exports = mongoose.model('Weeks', weeksSchema);

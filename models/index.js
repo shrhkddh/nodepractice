@@ -23,6 +23,6 @@
 
 // module.exports = { sequelize, model };
 
-const Batches = require('./Batches');
+// const Batches = require('./Batches');
 
-module.exports = { Batches };
+// module.exports = { Batches };

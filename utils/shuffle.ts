@@ -1,5 +1,4 @@
 const shuffle = (arr : any[]) => {
-    console.log(typeof(arr));
     let copy = arr.slice();
 
     for (let i = arr.length - 1; i > 0; i--){

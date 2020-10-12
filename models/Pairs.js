@@ -32,12 +32,12 @@
 // };
 
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const pairsSchema = new mongoose.Schema({
-    id : mongoose.Schema.Types.ObjectId,
-    member1 : {type : String, required : true},
-    member2 : {type : String, required : true},
-    member3 : String,
+const pairsSchema = new Schema({
+    id   : Schema.Types.ObjectId,
+    pair : {type : Array, required : true},
+    week : {type : Number},
 },{
     versionKey : false
 });

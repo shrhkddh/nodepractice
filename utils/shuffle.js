@@ -1,6 +1,5 @@
 "use strict";
 const shuffle = (arr) => {
-    console.log(typeof (arr));
     let copy = arr.slice();
     for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * i);

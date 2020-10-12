@@ -30,15 +30,19 @@
 // };
 
 const mongoose = require('mongoose');
+const batchesSchema = require('./Batches');
 
-const memberSchema = new mongoose.Schema({
-    id           : mongoose.Schema.Types.ObjectId,
+const Schema = mongoose.Schema;
+
+const memberSchema = new Schema({
+    id           : Schema.Types.ObjectId,
     name         : {type : String, required : true},
     email        : {type : String, required : true, unique : true},
     password     : {type : String, required : true},
     refreshToken : {type : String},
     staff        : {type : Boolean, default : false},
-    batche       : [{type : mongoose.Schema.Types.ObjectId, ref : 'Batch'}],
+    pairHistory  : {type : Array},
+    batch        : {type : String},
 }, {
     versionKey : false
 });

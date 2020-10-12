@@ -2,16 +2,22 @@ require('dotenv').config();
 const app      = require('./app');
 const http     = require('http');
 const server   = http.createServer(app);
-const mongoose = require('./database');
+const {mongoose, redis} = require('./database');
+
 
 (async function () {
     try {
         await mongoose;
-        console.log('DB CONNECTED');
+        console.log('MONGODB CONNECTED');
 
         server.listen(process.env.PORT, () => {
             console.log(`SERVER IS LISTENING TO PORT: ${process.env.PORT}`);
         });
+
+        await redis;
+        console.log('REDISDB CONNECTED');
+
+        
     } catch (err) {
         console.log('DB CONNECTION ERROR');
         console.log(err);

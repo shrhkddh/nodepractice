@@ -1,14 +1,15 @@
+const bcrypt             = require('bcryptjs');
+const redis              = require('../database');
 const { Members }        = require('../DAO');
+const { errorGenerator } = require('../utils');
 
-// const Member = require('../models/Members');
-const { errorGenerator, shuffle } = require('../utils');
-const bcrypt = require('bcryptjs');
 
 const getMembers = async function ( req, res, next ) {
     try {
         const members = await Members.findMember(req.query);
+        if (members.length === 0) errorGenerator('UNEXISTS_MEMBER', 400);
         
-        res.status(200).json({ members });
+        res.status(200).json( members );
     } catch (err) {
         next(err);
     }
@@ -18,7 +19,8 @@ const signUp = async function (req, res, next) {
     try {
         const { email } = req.body;
         const member = await Members.findMember({ email });
-        if (member.length != 0) errorGenerator('ALREADY_EXISTS', 401);
+        
+        if (member.length != 0) await Members.registerdMemberData(req.body);
 
         await Members.createMemberData(req.body);
 
@@ -33,15 +35,32 @@ const signIn = async function (req, res, next) {
         const { email = null, password = null } = req.body;
 
         const [member] = await Members.findMember({ email });
-        if (!member) errorGenerator('INVALID MEMBER', 401);
+        if (!member) errorGenerator('INVALID EMAIL', 400);
 
         const passwordCheck = await bcrypt.compare(password, member.password);
         if (!passwordCheck) errorGenerator('INVALID PASSWORD', 401);
 
-        const token = Members.createToken(member._id);
-        // localStorage.setItem('token', token);
-        console.log("Token is : ", typeof(token));
-        res.status(200).json({ message : 'CREATE TOKEN', token });
+        const token = await Members.createToken(member._id);
+        redis.redisdb.hset('membersToken', token.accessToken, token.refreshToken);
+
+        res.status(200).json({ token : token.accessToken });
+        // res.status(200).json({ message : 'CREATE TOKEN'});
+    } catch (err) {
+        next(err);
+    }
+};
+
+// signOut으로 들어오면 먼저 토큰 유효성을 검사한 뒤 유효하면 토큰들 디비에서 다 삭제한다.
+const signOut = async function (req, res, next) {
+    try{
+        const auth = req.headers['authorization'];
+        const decodedAuth = jwt.verify(auth, process.env.SECRET_KEY);
+
+        const data = decodedAuth._id
+        const removeMongoToken = await Members.deleteToken(data)
+        const removeRedisToken = await redis.redisdb.handle_reply('membersToken', auth)
+
+        res.status(200).json({ message : 'REMOVE TOKEN' });
     } catch (err) {
         next(err);
     }
@@ -73,16 +92,10 @@ const deleteMember = async function (req, res, next) {
     }
 };
 
-const shuffleTest = async function (req, res, next) {
-    try {
-        const members = await Members.findMember(req.query);
-
-        let pairs = [];
-        let shuffledList = shuffle(members);
-        pairs.push(shuffledList);
-        res.status(200).json({ pairs });
-    } catch (err) {
-        next(err);
-    }
-};
-module.exports = { getMembers, signUp, signIn, patchMember, deleteMember, shuffleTest};
+module.exports = { 
+    getMembers,
+    signUp,
+    signIn,
+    signOut,
+    patchMember,
+    deleteMember};

@@ -1,11 +1,23 @@
-const mongoose = require('mongoose');
+const mongoose    = require('mongoose');
+const redis       = require('redis');
+const jsonify     = require('redis-jsonify');
 
-module.exports = mongoose.connect(process.env.MONGO_URL, {
+const mongodb = mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser    : true,
     useUnifiedTopology : true,
     useFindAndModify   : false,
     useCreateIndex     : true,
 });
+
+const redisdb = redis.createClient({
+    host     : process.env.HOST,
+    port     : process.env.REDISPORT,
+});
+redisdb.on('error', function (err) {
+    console.log('Error' + err);
+})
+
+module.exports = { mongodb, redisdb };
 
 // const { Sequelize } = require("sequelize");
 
