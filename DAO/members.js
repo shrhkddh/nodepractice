@@ -38,47 +38,95 @@
 // module.exports = Members;
 
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const jwt    = require('jsonwebtoken');
 const Member = require('../models/Members');
+const Batch  = require('../models/Batches');
+const uuid   = require('uuid');
 
-const findMember = (querystring) => {
-    const filter = querystring;
-    return Member.find(filter)
-    //find 메소드는 array형태를 리턴한다.
+const findMember = async (querystring) => {
+    try {
+        return Member.find(
+            querystring,
+            {_id : 1, name : 1, email : 1, pairHistory : 1, password : 1}
+        );
+
+    } catch (err) {
+        console.log(err)
+    }
 };
 
 const memberEncodePassword = async ({
     name,
     email,
     password,
+    staff,
 }) => {
     const hashedPassword = await bcrypt.hash(password, 12);
     const memberData = new Member({
         name,
         email,
         password : hashedPassword,
+        staff : false,
     });
-    console.log("hashPassword is : ", hashedPassword);
     return memberData;
 };
 
-const createToken = (memberId) => {
-    const token = jwt.sign({ _id : memberId.toString() }, process.env.SECRET_KEY, { expiresIn : process.env.EXPIRESIN });
-    // const token2 = jwt.sign({ _id : memberId.toString() }, process.env.SECRET_KEY, { expiresIn : '5m' });
+const createToken = async (memberId) => {
+    try{
+        const refreshToken = jwt.sign(
+            { _id : memberId.toString(), uuid : uuid.v4() },
+            process.env.SECRET_KEY,
+            { expiresIn : process.env.EXPIRESIN }
+            );
+        const accessToken = jwt.sign(
+            { _id : memberId.toString() },
+            process.env.SECRET_KEY,
+            { expiresIn : '10m' }
+            );
 
-    // console.log("Token1 is : ", token);
-    // console.log("This is Token2 : ", token2);
-    return token;
+        // const member = await Member.findOneAndUpdate(
+        //     { _id   : memberId.toString()},
+        //     { $set  : {refreshToken : refreshToken}},
+        //     { multi : true, new : true}
+        // );
+        // const decodedRT = jwt.verify(refreshToken, process.env.SECRET_KEY);
+        // console.log("access is : ", (decodedRT.exp - decodedRT.iat));
+
+        return { refreshToken, accessToken };
+    } catch (err) {
+        console.log(err);
+    }
 };
+
+const deleteToken = (memberId) => {
+    Member.findOneAndUpdate(
+        { _id : memberId.toString() },
+        { $set : {refreshToken : ''}}
+    );
+}
 
 const createMemberData = async (memberInput) => {
     const memberData = await memberEncodePassword(memberInput);
     return memberData.save();
 };
 
+const registerdMemberData = async (memberInput) => {
+    const hashedPassword = await bcrypt.hash(memberInput.password, 12);
+    try{
+        await Member.updateOne(
+            {name : memberInput.name},
+            {$set : { password : hashedPassword, staff : false} }
+        );
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 module.exports = { 
     findMember,
     memberEncodePassword,
     createToken,
+    deleteToken,
     createMemberData,
+    registerdMemberData,
 };

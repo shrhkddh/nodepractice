@@ -24,11 +24,12 @@
 // };
 
 const mongoose = require('mongoose');
+const memberSchema = require('./Members');
 const Schema = mongoose.Schema;
 
 const batchesSchema = new Schema({
-    id   : mongoose.Schema.Types.ObjectId,
-    name : {type : String, required : true},
+    id      : Schema.Types.ObjectId,
+    name    : {type : String, required : true},
 },{
     versionKey : false
 });

@@ -21,7 +21,6 @@ const Batch = require('../models/Batches');
 // class Batches {
 const findbatch = (queryString) => {
     const filter = queryString;
-    console.log(filter);
     if (Object.keys(filter).length === 0) {
         return Batch.find({})
     }

@@ -1,7 +1,15 @@
-const errorGenerator = require('./errorGenerator');
-const firstRun       = require('./firstrun');
-// const secondRun      = require('./secondrun');
-const shuffle        = require('./shuffle');
-// const groupStudents  = require('./groupstudent');
+const errorGenerator   = require('./errorGenerator');
+const savePair         = require('./savePair');
+const filterDuplicates = require('./filterDuplicate');
+const shuffle          = require('./shuffle');
+const groupStudents    = require('./groupStudent');
+const csvconverter     = require('./csvconverter');
 
-module.exports = { errorGenerator, shuffle, firstRun };
+module.exports = {
+    errorGenerator,
+    shuffle,
+    savePair,
+    groupStudents,
+    csvconverter,
+    filterDuplicates
+};
